@@ -1,4 +1,5 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
+import { gaEvent } from "../ga4"; // ⬅️ GA4 helper
 
 const questions = [
   { id: 1, dim: "Touch", text: "Unhurried physical touch increases your desire." },
@@ -34,6 +35,11 @@ const Questionnaire = ({ onSubmit, initial }) => {
   const [responses, setResponses] = useState({});
   const [touched, setTouched] = useState({});
 
+  // timing & one-offs
+  const mountedAtRef = useRef(performance.now());
+  const firstAnswerAtRef = useRef(null);
+  const startedRef = useRef(false);
+
   useEffect(() => {
     if (initial && Object.keys(initial).length) {
       setResponses(initial);
@@ -46,22 +52,68 @@ const Questionnaire = ({ onSubmit, initial }) => {
   const complete = useMemo(() => questions.every((q) => !!responses[q.id]), [responses]);
   const answered = useMemo(() => questions.filter((q) => !!responses[q.id]).length, [responses]);
 
+  // Fire progress updates
+  useEffect(() => {
+    if (answered >= 0) {
+      gaEvent("progress_update", {
+        quiz_name: "sensuality_quiz",
+        answered_count: answered,
+        total_questions: questions.length,
+      });
+    }
+  }, [answered]);
+
   const handleChange = (id, value) => {
+    // mark first interaction → quiz_start
+    if (!startedRef.current) {
+      startedRef.current = true;
+      const now = performance.now();
+      firstAnswerAtRef.current = now;
+      gaEvent("quiz_start", {
+        quiz_name: "sensuality_quiz",
+        time_to_first_answer_ms: Math.round(now - mountedAtRef.current),
+      });
+    }
+
+    const qMeta = questions.find((q) => q.id === id);
     setResponses((prev) => ({ ...prev, [id]: value }));
     setTouched((prev) => ({ ...prev, [id]: true }));
+
+    gaEvent("select_answer", {
+      quiz_name: "sensuality_quiz",
+      question_id: String(id),
+      dimension: qMeta?.dim || "Unknown",
+      answer_value: String(value),
+      question_index: questions.findIndex((q) => q.id === id) + 1,
+    });
   };
 
   const submitNow = () => {
+    gaEvent("submit_click", {
+      quiz_name: "sensuality_quiz",
+      complete,
+      answered_count: answered,
+      total_questions: questions.length,
+      time_to_submit_ms: Math.round(performance.now() - mountedAtRef.current),
+    });
+
     if (!complete) {
+      // Mark all as touched and focus first missing
       const allTouched = questions.reduce((acc, q) => ({ ...acc, [q.id]: true }), {});
       setTouched(allTouched);
       const firstMissing = questions.find((q) => !responses[q.id]);
+      gaEvent("submit_incomplete", {
+        quiz_name: "sensuality_quiz",
+        first_missing_id: firstMissing?.id ? String(firstMissing.id) : null,
+        missing_count: questions.length - answered,
+      });
       if (firstMissing) {
         const el = document.querySelector(`#q${firstMissing.id}-1`);
         if (el) el.focus();
       }
       return;
     }
+
     onSubmit(responses);
   };
 

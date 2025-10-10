@@ -8,12 +8,15 @@
     />
     <meta name="theme-color" content="#1c0b23" />
     <meta name="color-scheme" content="dark light" />
-    <meta name="description" content="Explore sensuality with a gentle, elegant questionnaire that highlights your unique sensory cues—touch, music, scent, visuals, pace, and more." />
+    <meta
+      name="description"
+      content="Explore sensuality with a gentle, elegant questionnaire that highlights your unique sensory cues—touch, music, scent, visuals, pace, and more."
+    />
     <title>Exploring Sensuality — by Pamela J Terrell</title>
 
     <!-- Icons -->
     <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
-    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+    <link rel="apple-touch-icon" href="%PUBLIC_URL%/icon-512.png" />
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
 
     <!-- Preconnects for Google Fonts -->
@@ -36,18 +39,31 @@
     />
 
     <!-- Open Graph (social sharing) -->
-    <meta property="og:title" content="Exploring Sensuality — by Pamela J Terrell" />
-    <meta property="og:description" content="A gentle, elegant way to understand your sensual preferences across touch, sound, sight, scent, and more." />
+    <meta
+      property="og:title"
+      content="Exploring Sensuality — by Pamela J Terrell"
+    />
+    <meta
+      property="og:description"
+      content="A gentle, elegant way to understand your sensual preferences across touch, sound, sight, scent, and more."
+    />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://pamelajterrell.com" />
-    <!-- If you have a sharing image, place it in /public and reference it: -->
-    <!-- <meta property="og:image" content="%PUBLIC_URL%/share-card.png" /> -->
+    <meta property="og:image" content="%PUBLIC_URL%/share-card.png" />
+    <meta name="twitter:image" content="%PUBLIC_URL%/share-card.png" />
 
-   <meta property="og:image" content="%PUBLIC_URL%/share-card.png" />
-<meta name="twitter:image" content="%PUBLIC_URL%/share-card.png" />
-<link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
-<link rel="apple-touch-icon" href="%PUBLIC_URL%/icon-512.png" />
+    <!-- Google tag (gtag.js) – GA4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-SDERQ98ZFH"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
 
+      // Disable automatic page_view so we can send SPA-safe page views
+      gtag("config", "G-SDERQ98ZFH", { send_page_view: false });
+    </script>
 
     <!-- Prevent Flash Of Unstyled Content (FOUC) for background -->
     <style>
