@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Questionnaire from "./components/Questionnaire";
 import Result from "./components/Result";
 import "./App.css";
+import { Analytics } from "@vercel/analytics/react";   // ✅ Add this line
 
 function App() {
   const [submitted, setSubmitted] = useState(false);
@@ -25,7 +26,6 @@ function App() {
   };
 
   const handleAdjustAnswers = () => {
-    // Go back to the questionnaire but keep the current responses
     setSubmitted(false);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
@@ -47,13 +47,10 @@ function App() {
               alt="Soft abstract silk with warm, sensual light"
               loading="eager"
             />
-            <figcaption className="sr-only">
-              Abstract sensual background evoking warmth and intimacy.
-            </figcaption>
           </figure>
         )}
 
-        <section className="content" aria-live="polite" aria-busy={submitted ? "true" : "false"}>
+        <section className="content" aria-live="polite">
           {!submitted ? (
             <Questionnaire initial={responses} onSubmit={handleFormSubmit} />
           ) : (
@@ -80,6 +77,8 @@ function App() {
           </a>
         </p>
       </footer>
+
+      <Analytics />   {/* ✅ Add this just before closing </div> */}
     </div>
   );
 }
