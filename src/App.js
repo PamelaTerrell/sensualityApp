@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Questionnaire from "./components/Questionnaire";
 import Result from "./components/Result";
 import "./App.css";
-import { Analytics } from "@vercel/analytics/react";   // ✅ Add this line
+import { Analytics } from "@vercel/analytics/react";
 
 function App() {
   const [submitted, setSubmitted] = useState(false);
@@ -11,7 +11,6 @@ function App() {
   const handleFormSubmit = (answers) => {
     setResponses(answers);
     setSubmitted(true);
-    console.log("[Questionnaire submitted]", answers);
 
     requestAnimationFrame(() => {
       const el = document.querySelector(".result-card");
@@ -36,7 +35,7 @@ function App() {
         <header className="title-wrap">
           <h1 className="title">Exploring Sensuality</h1>
           <p className="subtitle">
-            Desire, comfort, and connection
+            Discover how your senses shape desire
           </p>
         </header>
 
@@ -78,7 +77,7 @@ function App() {
         </p>
       </footer>
 
-      <Analytics />   {/* ✅ Add this just before closing </div> */}
+      <Analytics />
     </div>
   );
 }
