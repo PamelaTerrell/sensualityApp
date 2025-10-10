@@ -296,3 +296,60 @@ html, body {
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition: none !important; animation-duration: 0s !important; }
 }
+
+/* --- Radio scale options (Likert) --- */
+.likert {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.6rem;
+}
+
+/* Each option “pill” */
+.likert-option {
+  flex: 1 1 18%;            /* about 5 across on desktop */
+  text-align: center;
+  min-width: 70px;
+}
+
+/* Input hidden, label styled as pill */
+.likert-input {
+  display: none;
+}
+
+.radio-pill {
+  display: block;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 999px;
+  padding: 0.45rem 0.6rem;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  font-size: 0.9rem;
+  user-select: none;
+}
+
+.likert-input:checked + .radio-pill {
+  background: rgba(255, 255, 255, 0.85);
+  color: #1b0b18;
+  font-weight: 600;
+}
+
+/* --- Responsive fix for iPhones and small screens --- */
+@media (max-width: 640px) {
+  .likert {
+    flex-direction: column;   /* stack vertically */
+    gap: 0.3rem;
+  }
+
+  .likert-option {
+    flex: 1 1 100%;
+    min-width: unset;
+  }
+
+  .radio-pill {
+    font-size: 1rem;
+    padding: 0.6rem;
+  }
+}
