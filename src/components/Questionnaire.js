@@ -1,26 +1,103 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { gaEvent } from "../ga4"; // ⬅️ GA4 helper
 
+// Reworded to be intimate, sensory, and inclusive – but less explicit
 const questions = [
-  { id: 1, dim: "Touch", text: "Unhurried physical touch increases your desire." },
-  { id: 2, dim: "Touch", text: "Gentle pressure (e.g., a slow back-of-hand trace) heightens arousal." },
-  { id: 3, dim: "Music", text: "Sensual music or rhythm helps you drop into the mood." },
-  { id: 4, dim: "Visual", text: "Visual cues (outfit, lighting, body language) enhance your desire." },
-  { id: 5, dim: "Visual", text: "Warm, flattering lighting makes you feel more aroused." },
-  { id: 6, dim: "Scent", text: "Scent (natural skin, perfume, candles) meaningfully affects your desire." },
-  { id: 7, dim: "Taste", text: "Taste (wine, chocolate, flavored lip balm) adds to sensual enjoyment." },
-  { id: 8, dim: "Pace", text: "Slow pacing and synced breathing help you feel turned on." },
-  { id: 9, dim: "Fantasy", text: "Anticipation and imagination build desire." },
-  { id: 10, dim: "Environment", text: "A tidy, cozy environment helps you relax into sensuality." },
-  { id: 11, dim: "Communication", text: "Verbal reassurance and attunement increase your arousal." },
-  { id: 12, dim: "Anticipation", text: "Teasing or a slow build makes the experience more exciting." },
-  { id: 13, dim: "Novelty", text: "Trying something slightly new boosts your desire." },
-  { id: 14, dim: "Power", text: "Gentle power dynamics can feel erotic for you." },
-  { id: 15, dim: "Aftercare", text: "Aftercare (cuddling, affirmations, softness) matters for your arousal." },
-  { id: 16, dim: "Context", text: "Low stress and feeling emotionally safe are essential for desire." },
-  { id: 17, dim: "Self-image", text: "Feeling confident in your body or outfit increases your desire." },
-  { id: 18, dim: "Pace", text: "Resisting urgency and savoring each moment makes desire deepen naturally." },
-  { id: 19, dim: "Connection", text: "You feel most aroused when there is mutual, enthusiastic response." }
+  {
+    id: 1,
+    dim: "Touch",
+    text: "Unhurried, intentional physical touch deepens your sense of connection.",
+  },
+  {
+    id: 2,
+    dim: "Touch",
+    text: "Gentle, lingering contact (like a slow trace along the hand or arm) heightens your responsiveness.",
+  },
+  {
+    id: 3,
+    dim: "Music",
+    text: "Music with a sensual or emotional tone helps you ease into a more receptive mood.",
+  },
+  {
+    id: 4,
+    dim: "Visual",
+    text: "Visual details (outfit, lighting, body language) significantly influence your sense of attraction.",
+  },
+  {
+    id: 5,
+    dim: "Visual",
+    text: "Warm, flattering lighting makes you feel more open to closeness and intimacy.",
+  },
+  {
+    id: 6,
+    dim: "Scent",
+    text: "Scent (natural skin, perfume, candles) meaningfully shapes how drawn in you feel.",
+  },
+  {
+    id: 7,
+    dim: "Taste",
+    text: "Taste (wine, chocolate, shared food, flavored lip balm) adds to your sense of sensual enjoyment.",
+  },
+  {
+    id: 8,
+    dim: "Pace",
+    text: "Unrushed pacing and synced breathing help you shift into a more sensual, present state.",
+  },
+  {
+    id: 9,
+    dim: "Fantasy",
+    text: "Anticipation and imagination build your sense of desire and excitement.",
+  },
+  {
+    id: 10,
+    dim: "Environment",
+    text: "A tidy, cozy environment helps you relax and soften into sensuality.",
+  },
+  {
+    id: 11,
+    dim: "Communication",
+    text: "Verbal reassurance, attunement, and check-ins increase your comfort and responsiveness.",
+  },
+  {
+    id: 12,
+    dim: "Anticipation",
+    text: "Teasing, a slow build, or delayed gratification makes the experience feel more charged and alive.",
+  },
+  {
+    id: 13,
+    dim: "Novelty",
+    text: "Trying something slightly new or different boosts your sense of interest and desire.",
+  },
+  {
+    id: 14,
+    dim: "Power",
+    text: "A gentle give-and-take around who leads can feel exciting and meaningful to you.",
+  },
+  {
+    id: 15,
+    dim: "Aftercare",
+    text: "Afterwards, softness (like cuddling, grounding touch, or affirming words) matters to how satisfied you feel.",
+  },
+  {
+    id: 16,
+    dim: "Context",
+    text: "Low stress and feeling emotionally safe are essential for you to feel genuinely open to intimacy.",
+  },
+  {
+    id: 17,
+    dim: "Self-image",
+    text: "Feeling confident in your body, outfit, or presence makes desire come more naturally.",
+  },
+  {
+    id: 18,
+    dim: "Pace",
+    text: "Resisting urgency and savoring each moment lets your desire deepen in a natural way.",
+  },
+  {
+    id: 19,
+    dim: "Connection",
+    text: "You feel most alive and engaged when there is clear, mutual, enthusiastic responsiveness.",
+  },
 ];
 
 const SCALE = [
@@ -49,8 +126,14 @@ const Questionnaire = ({ onSubmit, initial }) => {
     }
   }, [initial]);
 
-  const complete = useMemo(() => questions.every((q) => !!responses[q.id]), [responses]);
-  const answered = useMemo(() => questions.filter((q) => !!responses[q.id]).length, [responses]);
+  const complete = useMemo(
+    () => questions.every((q) => !!responses[q.id]),
+    [responses]
+  );
+  const answered = useMemo(
+    () => questions.filter((q) => !!responses[q.id]).length,
+    [responses]
+  );
 
   // Fire progress updates
   useEffect(() => {
@@ -99,7 +182,10 @@ const Questionnaire = ({ onSubmit, initial }) => {
 
     if (!complete) {
       // Mark all as touched and focus first missing
-      const allTouched = questions.reduce((acc, q) => ({ ...acc, [q.id]: true }), {});
+      const allTouched = questions.reduce(
+        (acc, q) => ({ ...acc, [q.id]: true }),
+        {}
+      );
       setTouched(allTouched);
       const firstMissing = questions.find((q) => !responses[q.id]);
       gaEvent("submit_incomplete", {
@@ -118,16 +204,26 @@ const Questionnaire = ({ onSubmit, initial }) => {
   };
 
   return (
-    <form className="questionnaire" noValidate onSubmit={(e) => e.preventDefault()}>
+    <form
+      className="questionnaire"
+      noValidate
+      onSubmit={(e) => e.preventDefault()}
+    >
       <header className="q-header">
-        <h2 className="q-title">Sensuality &amp; Desire Questionnaire</h2>
+        <h2 className="q-title">Sensuality &amp; Connection Questionnaire</h2>
         <p className="q-subtitle">
-          Explore what heightens your desire across touch, sound, sight, scent, and emotional pacing.
+          Explore how touch, sound, sight, scent, pacing, and emotional safety
+          shape your experience of desire and intimacy.
         </p>
 
         <div className="q-progress" aria-live="polite">
-          <div className="q-progress-bar" style={{ width: `${(answered / questions.length) * 100}%` }} />
-          <span className="q-progress-label">{answered}/{questions.length} answered</span>
+          <div
+            className="q-progress-bar"
+            style={{ width: `${(answered / questions.length) * 100}%` }}
+          />
+          <span className="q-progress-label">
+            {answered}/{questions.length} answered
+          </span>
         </div>
       </header>
 
@@ -137,14 +233,25 @@ const Questionnaire = ({ onSubmit, initial }) => {
           const showError = touched[q.id] && !current;
           const groupName = `q${q.id}`;
           return (
-            <fieldset key={q.id} className={`q-item ${showError ? "q-item--error" : ""}`}>
+            <fieldset
+              key={q.id}
+              className={`q-item ${showError ? "q-item--error" : ""}`}
+            >
               <legend className="q-text">
-                <span style={{ opacity: 0.7, fontWeight: 500, marginRight: 8 }}>{q.dim} ·</span>
+                <span
+                  style={{ opacity: 0.7, fontWeight: 500, marginRight: 8 }}
+                >
+                  {q.dim} ·
+                </span>
                 {q.text}
               </legend>
 
               <div className="q-box">
-                <div className="likert" role="radiogroup" aria-label={q.text}>
+                <div
+                  className="likert"
+                  role="radiogroup"
+                  aria-label={q.text}
+                >
                   {SCALE.map((opt) => {
                     const id = `${groupName}-${opt.value}`;
                     return (
@@ -165,7 +272,9 @@ const Questionnaire = ({ onSubmit, initial }) => {
                     );
                   })}
                 </div>
-                {showError && <p className="q-hint">Please choose one option.</p>}
+                {showError && (
+                  <p className="q-hint">Please choose one option.</p>
+                )}
               </div>
             </fieldset>
           );
@@ -173,7 +282,12 @@ const Questionnaire = ({ onSubmit, initial }) => {
       </div>
 
       <div className="q-actions">
-        <button type="button" className="btn-primary" onClick={submitNow} disabled={!complete}>
+        <button
+          type="button"
+          className="btn-primary"
+          onClick={submitNow}
+          disabled={!complete}
+        >
           See My Insights
         </button>
       </div>

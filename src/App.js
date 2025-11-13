@@ -1,10 +1,31 @@
+// src/App.js
 import React, { useEffect, useState } from "react"; // ✅ includes both hooks
 import Questionnaire from "./components/Questionnaire";
 import Result from "./components/Result";
 import "./App.css";
 import { Analytics } from "@vercel/analytics/react";
-import { gaEvent } from "./ga4"; // only if you added GA4 tracking earlier
+import { gaEvent } from "./ga4"; // GA4 tracking
 
+// 🔧 Helper: build a safe, tidy GA4 payload from quiz answers
+const buildAnswersPayload = (answers) => {
+  const payload = {};
+
+  Object.entries(answers || {}).forEach(([key, value]) => {
+    if (value == null) return;
+
+    let v = String(value);
+
+    // Avoid sending huge text blobs into GA4
+    if (v.length > 80) {
+      v = v.slice(0, 80) + "…";
+    }
+
+    // Prefix for clarity inside GA4 ("answer_q1", etc.)
+    payload[`answer_${key}`] = v;
+  });
+
+  return payload;
+};
 
 function App() {
   const [submitted, setSubmitted] = useState(false);
@@ -26,12 +47,21 @@ function App() {
     setResponses(answers);
     setSubmitted(true);
 
-    // Fire quiz_complete with quick stats
     const total_questions = Object.keys(answers || {}).length;
+
+    // Existing: quiz_complete with summary stats
     gaEvent("quiz_complete", {
       quiz_name: "sensuality_quiz",
       total_questions,
       answered_count: total_questions,
+    });
+
+    // ✨ New: send the actual answers in a separate event
+    const answersPayload = buildAnswersPayload(answers);
+
+    gaEvent("quiz_answers", {
+      quiz_name: "sensuality_quiz",
+      ...answersPayload,
     });
 
     // Move focus to result card for a11y

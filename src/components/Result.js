@@ -36,29 +36,46 @@ function tierLabel(avg) {
   if (avg >= 4.2) return "Elevated Responsiveness";
   if (avg >= 3.4) return "Highly Responsive";
   if (avg >= 2.6) return "Situational";
-  if (avg >= 1.8) return "Gentle/Selective";
-  return "Subtle/Context-dependent";
+  if (avg >= 1.8) return "Gentle / Selective";
+  return "Subtle / Context-dependent";
 }
 
 function suggestionFor(top) {
   switch (top) {
-    case "Touch": return "Lean into warm, unhurried touch—hand massage, slow embraces, or shared stretching.";
-    case "Music": return "Build a mood playlist; dim lights and let rhythm guide breathing and pacing.";
-    case "Visual": return "Curate the scene—soft fabrics, flattering light, outfits that make you feel radiant.";
-    case "Scent": return "Experiment with aroma—skin-close fragrances, a hint of vanilla, or fresh linen.";
-    case "Taste": return "Add small delights (a square of chocolate, a sip of wine) to anchor attention in the senses.";
-    case "Pace": return "Resist urgency; slow the tempo and sync breathing—let anticipation deepen naturally.";
-    case "Fantasy": return "Seed the day with imagination—suggestive notes or daydreams that build anticipation.";
-    case "Environment": return "Tidy, cozy spaces reduce distraction—soft textiles and warm light deepen relaxation.";
-    case "Communication": return "Gentle check-ins and reassurance keep the nervous system calm and open.";
-    case "Anticipation": return "Tease, pause, and return—let the build make the moment feel inevitable.";
-    case "Novelty": return "Try one small new element within your comfort zone to spark curiosity.";
-    case "Power": return "Light guidance or being guided can heighten focus—agree on signals and limits.";
-    case "Aftercare": return "Plan softness after—cuddles, water, affirmations—to make the experience feel complete.";
-    case "Context": return "Lower stress first—warm shower, stretch, or a short walk can reset the tone.";
-    case "Self-image": return "Wear something that makes you feel great—confidence is a powerful accelerator.";
-    case "Connection": return "Prioritize mutual enthusiasm—respond to what feels alive for both of you.";
-    default: return "Follow what feels calm, grounded, and connected—small signals often open big doors.";
+    case "Touch":
+      return "Lean into warm, unhurried touch—hand massage, slow embraces, or shared stretching that lets your body unwind.";
+    case "Music":
+      return "Create a mood playlist; soften the lighting and let rhythm guide breathing, pacing, and presence together.";
+    case "Visual":
+      return "Curate the scene—soft fabrics, flattering light, and outfits that make you feel confident and fully yourself.";
+    case "Scent":
+      return "Experiment with aroma—skin-close fragrances, a hint of vanilla, fresh linen, or candles that anchor you in the moment.";
+    case "Taste":
+      return "Add small delights (a square of chocolate, a favorite drink, shared bites) to keep your attention grounded in the senses.";
+    case "Pace":
+      return "Resist urgency; slow the tempo, sync your breathing, and let anticipation build instead of rushing the moment.";
+    case "Fantasy":
+      return "Seed the day with imagination—playful messages, shared plans, or daydreams that gently build anticipation.";
+    case "Environment":
+      return "Shape your surroundings—tidy, cozy spaces with soft textiles and warm light help your body relax and open up.";
+    case "Communication":
+      return "Use gentle check-ins, appreciation, and reassurance to keep the nervous system calm, connected, and receptive.";
+    case "Anticipation":
+      return "Let there be a build—tease, pause, and return, so the moment feels intentional, not rushed.";
+    case "Novelty":
+      return "Introduce one small new element within your comfort zone to spark curiosity and fresh energy.";
+    case "Power":
+      return "Experiment with light guidance or being guided in ways that feel safe—agree on cues, limits, and mutual enthusiasm.";
+    case "Aftercare":
+      return "Plan softness afterwards—cuddles, grounding touch, water, or affirming words so the experience feels complete and held.";
+    case "Context":
+      return "Lower stress first—a warm shower, stretching, or a short walk can reset your system and make space for desire.";
+    case "Self-image":
+      return "Choose clothing, rituals, or grooming that make you feel good in your body; confidence itself is a strong amplifier.";
+    case "Connection":
+      return "Prioritize clear, mutual enthusiasm—respond to what feels alive for both of you, and let that guide the pace.";
+    default:
+      return "Keep following what feels calm, grounded, and mutually connected—small signals often open the most meaningful doors.";
   }
 }
 
@@ -97,11 +114,26 @@ const Result = ({ answers = {}, onRestart, onAdjust }) => {
 
   if (stats.count === 0) {
     return (
-      <section className="result-card" role="region" aria-labelledby="result-title" tabIndex="-1">
-        <h2 id="result-title" className="result-title">Your Sensuality Profile</h2>
-        <p className="insight">No answers detected. Please complete the questionnaire to see your results.</p>
+      <section
+        className="result-card"
+        role="region"
+        aria-labelledby="result-title"
+        tabIndex="-1"
+      >
+        <h2 id="result-title" className="result-title">
+          Your Sensuality Profile
+        </h2>
+        <p className="insight">
+          No answers detected. Please complete the questionnaire to see your
+          personalized insights.
+        </p>
         <div className="result-actions">
-          <button className="btn-primary" onClick={() => (onRestart ? onRestart() : window.location.reload())}>
+          <button
+            className="btn-primary"
+            onClick={() =>
+              onRestart ? onRestart() : window.location.reload()
+            }
+          >
             Start over
           </button>
         </div>
@@ -110,9 +142,16 @@ const Result = ({ answers = {}, onRestart, onAdjust }) => {
   }
 
   return (
-    <section className="result-card" role="region" aria-labelledby="result-title" tabIndex="-1">
+    <section
+      className="result-card"
+      role="region"
+      aria-labelledby="result-title"
+      tabIndex="-1"
+    >
       <header className="result-head">
-        <h2 id="result-title" className="result-title">Your Sensuality Profile</h2>
+        <h2 id="result-title" className="result-title">
+          Your Sensuality Profile
+        </h2>
         <span className="result-badge" title="Overall responsiveness tier">
           {profile}
         </span>
@@ -126,7 +165,7 @@ const Result = ({ answers = {}, onRestart, onAdjust }) => {
         <div
           className="meter"
           role="progressbar"
-          aria-label="Overall responsiveness"
+          aria-label="Overall sensual responsiveness"
           aria-valuemin={0}
           aria-valuemax={100}
           aria-valuenow={percent}
@@ -134,7 +173,8 @@ const Result = ({ answers = {}, onRestart, onAdjust }) => {
           <div className="meter-fill" style={{ width: `${percent}%` }} />
         </div>
         <p className="result-note">
-          Based on {stats.count} prompts. Scale adapts to Yes/No (mapped to low/high) or 1–5 choices.
+          Based on {stats.count} prompts. Higher percentages reflect stronger
+          responsiveness to sensual and emotional cues across the quiz.
         </p>
       </div>
 
@@ -165,30 +205,38 @@ const Result = ({ answers = {}, onRestart, onAdjust }) => {
       <div className="insight">
         {stats.avg >= 3.4 ? (
           <p>
-            You seem <strong>open and responsive</strong> across multiple cues. Try layering your favorites for deeper immersion.
+            You appear{" "}
+            <strong>open and responsive across multiple cues</strong>. You may
+            find that layering your favorite senses—like touch, music, or
+            lighting—creates especially rich, memorable moments.
           </p>
         ) : stats.avg >= 2.6 ? (
           <p>
-            Your responsiveness looks <strong>situational</strong>—the right context unlocks more. Small shifts in mood and setting can
-            make a big difference.
+            Your responsiveness looks{" "}
+            <strong>situational and context-dependent</strong>. The right mood,
+            timing, and environment can unlock much deeper sensual and emotional
+            engagement for you.
           </p>
         ) : (
           <p>
-            Your preferences appear <strong>subtle or selective</strong>. Go slow and notice the signals that reliably feel calming and
-            inviting.
+            Your preferences appear{" "}
+            <strong>subtle or highly selective</strong>. Going slowly, honoring
+            your boundaries, and noticing what genuinely feels inviting can make
+            your experiences more grounded and satisfying.
           </p>
         )}
 
         <p className="tip">
           <em>
-            Genuine desire thrives with relaxed pacing and enthusiastic connection—resisting urgency invites deeper attunement and
-            mutual excitement.
+            Genuine desire tends to flourish with relaxed pacing, clear
+            consent, and mutual enthusiasm—stepping away from urgency often
+            invites deeper attunement and shared connection.
           </em>
         </p>
 
         {stats.top && (
           <p className="tip">
-            <strong>Next step:</strong> {tip}
+            <strong>Where to focus next:</strong> {tip}
           </p>
         )}
       </div>
@@ -196,7 +244,9 @@ const Result = ({ answers = {}, onRestart, onAdjust }) => {
       <div className="result-actions">
         <button
           className="btn-primary"
-          onClick={() => (onRestart ? onRestart() : window.location.reload())}
+          onClick={() =>
+            onRestart ? onRestart() : window.location.reload()
+          }
         >
           Start over
         </button>

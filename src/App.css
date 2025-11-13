@@ -235,3 +235,21 @@ html,body{
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{transition:none !important; animation-duration:0s !important}
 }
+
+/* ============================
+   Focus states (accessibility)
+   ============================ */
+
+:focus-visible {
+  outline: 2px solid var(--accent2);
+  outline-offset: 3px;
+}
+
+/* So we don’t double-outline inside the card, refine a few key elements */
+.btn-primary:focus-visible,
+.btn-ghost:focus-visible,
+.radio-pill:focus-visible {
+  outline: 2px solid var(--accent2);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 2px rgba(28, 11, 35, 0.9), 0 0 14px rgba(255, 140, 200, 0.6);
+}
