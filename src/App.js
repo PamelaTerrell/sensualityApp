@@ -190,7 +190,7 @@ function App() {
             </h2>
 
             <p className="code-love-body">
-              Follow <strong>Patrick &amp; Jean</strong> as they fall in love
+              Follow <strong>Patrick &amp; Jean</strong> as they learn to understand each other
               through curiosity, logic, and code.
               <br />
               <br />
