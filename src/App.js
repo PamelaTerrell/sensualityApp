@@ -6,7 +6,7 @@ import "./App.css";
 import { Analytics } from "@vercel/analytics/react";
 import { gaEvent } from "./ga4"; // GA4 tracking
 
-// 🔧 Helper: build a safe, tidy GA4 payload from quiz answers
+// Helper: build a safe, tidy GA4 payload from quiz answers
 const buildAnswersPayload = (answers) => {
   const payload = {};
 
@@ -17,7 +17,7 @@ const buildAnswersPayload = (answers) => {
 
     // Avoid sending huge text blobs into GA4
     if (v.length > 80) {
-      v = v.slice(0, 80) + "…";
+      v = v.slice(0, 80) + "...";
     }
 
     // Prefix for clarity inside GA4 ("answer_q1", etc.)
@@ -31,10 +31,10 @@ function App() {
   const [submitted, setSubmitted] = useState(false);
   const [responses, setResponses] = useState({});
 
-  // NEW: popup state
+  // Code Love popup state
   const [showCodeLovePopup, setShowCodeLovePopup] = useState(false);
 
-  // Send a one-time "quiz_view" event on first load (StrictMode-safe)
+  // One-time "quiz_view" event on first load
   useEffect(() => {
     try {
       if (!sessionStorage.getItem("ga_quiz_view_sent")) {
@@ -46,35 +46,13 @@ function App() {
     }
   }, []);
 
-  // NEW: show Code Love promo popup once per session, after a short delay
+  // Show Code Love popup immediately on load (every visit)
   useEffect(() => {
-    let timer;
-
-    try {
-      const seen = sessionStorage.getItem("code_love_popup_seen");
-      if (!seen) {
-        timer = setTimeout(() => {
-          setShowCodeLovePopup(true);
-          gaEvent("popup_show", {
-            popup_name: "code_love_promo",
-            location: "sensuality_app",
-          });
-        }, 8000); // show after 8 seconds; adjust as you like
-      }
-    } catch {
-      // If sessionStorage fails, still show popup once
-      timer = setTimeout(() => {
-        setShowCodeLovePopup(true);
-        gaEvent("popup_show", {
-          popup_name: "code_love_promo",
-          location: "sensuality_app",
-        });
-      }, 8000);
-    }
-
-    return () => {
-      if (timer) clearTimeout(timer);
-    };
+    setShowCodeLovePopup(true);
+    gaEvent("popup_show", {
+      popup_name: "code_love_promo",
+      location: "sensuality_app",
+    });
   }, []);
 
   const handleFormSubmit = (answers) => {
@@ -116,7 +94,7 @@ function App() {
   };
 
   // Outbound link tracking for the footer credit
-  const handleOutboundClick = (e) => {
+  const handleOutboundClick = () => {
     gaEvent("click_outbound", {
       destination: "https://pamelajterrell.com",
       link_text: "Pamela J Terrell",
@@ -124,12 +102,9 @@ function App() {
     });
   };
 
-  // NEW: popup handlers
+  // Popup handlers
   const handleCloseCodeLovePopup = () => {
     setShowCodeLovePopup(false);
-    try {
-      sessionStorage.setItem("code_love_popup_seen", "1");
-    } catch {}
     gaEvent("popup_dismiss", {
       popup_name: "code_love_promo",
       location: "sensuality_app",
@@ -137,9 +112,6 @@ function App() {
   };
 
   const handleVisitCodeLove = () => {
-    try {
-      sessionStorage.setItem("code_love_popup_seen", "1");
-    } catch {}
     gaEvent("click_outbound", {
       destination: "https://patrickandjean.com",
       link_text: "Visit Code Love",
@@ -195,7 +167,7 @@ function App() {
         </p>
       </footer>
 
-      {/* NEW: Code Love popup */}
+      {/* Code Love popup */}
       {showCodeLovePopup && (
         <div
           className="code-love-backdrop"
@@ -212,13 +184,21 @@ function App() {
             >
               ×
             </button>
+
             <h2 id="code-love-title" className="code-love-heading">
-              Looking for a story told in code?
+              Discover <strong>Code Love</strong>
             </h2>
+
             <p className="code-love-body">
-              Visit <strong>Code Love</strong> at{" "}
-              <strong>PatrickandJean.com</strong> to follow a story that also teaches you coding concepts.
+              Follow <strong>Patrick &amp; Jean</strong> as they fall in love
+              through curiosity, logic, and code.
+              <br />
+              <br />
+              Their story begins at:
+              <br />
+              <strong>patrickandjean.com</strong>
             </p>
+
             <button
               type="button"
               className="code-love-cta"
