@@ -1,5 +1,5 @@
 // src/App.js
-import React, { useEffect, useState } from "react"; // ✅ includes both hooks
+import React, { useEffect, useState } from "react";
 import Questionnaire from "./components/Questionnaire";
 import Result from "./components/Result";
 import "./App.css";
@@ -31,6 +31,9 @@ function App() {
   const [submitted, setSubmitted] = useState(false);
   const [responses, setResponses] = useState({});
 
+  // NEW: popup state
+  const [showCodeLovePopup, setShowCodeLovePopup] = useState(false);
+
   // Send a one-time "quiz_view" event on first load (StrictMode-safe)
   useEffect(() => {
     try {
@@ -43,20 +46,49 @@ function App() {
     }
   }, []);
 
+  // NEW: show Code Love promo popup once per session, after a short delay
+  useEffect(() => {
+    let timer;
+
+    try {
+      const seen = sessionStorage.getItem("code_love_popup_seen");
+      if (!seen) {
+        timer = setTimeout(() => {
+          setShowCodeLovePopup(true);
+          gaEvent("popup_show", {
+            popup_name: "code_love_promo",
+            location: "sensuality_app",
+          });
+        }, 8000); // show after 8 seconds; adjust as you like
+      }
+    } catch {
+      // If sessionStorage fails, still show popup once
+      timer = setTimeout(() => {
+        setShowCodeLovePopup(true);
+        gaEvent("popup_show", {
+          popup_name: "code_love_promo",
+          location: "sensuality_app",
+        });
+      }, 8000);
+    }
+
+    return () => {
+      if (timer) clearTimeout(timer);
+    };
+  }, []);
+
   const handleFormSubmit = (answers) => {
     setResponses(answers);
     setSubmitted(true);
 
     const total_questions = Object.keys(answers || {}).length;
 
-    // Existing: quiz_complete with summary stats
     gaEvent("quiz_complete", {
       quiz_name: "sensuality_quiz",
       total_questions,
       answered_count: total_questions,
     });
 
-    // ✨ New: send the actual answers in a separate event
     const answersPayload = buildAnswersPayload(answers);
 
     gaEvent("quiz_answers", {
@@ -64,7 +96,6 @@ function App() {
       ...answersPayload,
     });
 
-    // Move focus to result card for a11y
     requestAnimationFrame(() => {
       const el = document.querySelector(".result-card");
       if (el) el.focus();
@@ -91,6 +122,30 @@ function App() {
       link_text: "Pamela J Terrell",
       location: "footer_credit",
     });
+  };
+
+  // NEW: popup handlers
+  const handleCloseCodeLovePopup = () => {
+    setShowCodeLovePopup(false);
+    try {
+      sessionStorage.setItem("code_love_popup_seen", "1");
+    } catch {}
+    gaEvent("popup_dismiss", {
+      popup_name: "code_love_promo",
+      location: "sensuality_app",
+    });
+  };
+
+  const handleVisitCodeLove = () => {
+    try {
+      sessionStorage.setItem("code_love_popup_seen", "1");
+    } catch {}
+    gaEvent("click_outbound", {
+      destination: "https://patrickandjean.com",
+      link_text: "Visit Code Love",
+      location: "code_love_popup",
+    });
+    window.open("https://patrickandjean.com", "_blank", "noopener,noreferrer");
   };
 
   return (
@@ -139,6 +194,41 @@ function App() {
           </a>
         </p>
       </footer>
+
+      {/* NEW: Code Love popup */}
+      {showCodeLovePopup && (
+        <div
+          className="code-love-backdrop"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="code-love-title"
+        >
+          <div className="code-love-modal">
+            <button
+              type="button"
+              className="code-love-close"
+              onClick={handleCloseCodeLovePopup}
+              aria-label="Close"
+            >
+              ×
+            </button>
+            <h2 id="code-love-title" className="code-love-heading">
+              Looking for a story told in code?
+            </h2>
+            <p className="code-love-body">
+              Visit <strong>Code Love</strong> at{" "}
+              <strong>PatrickandJean.com</strong> to follow a story that also teaches you coding concepts.
+            </p>
+            <button
+              type="button"
+              className="code-love-cta"
+              onClick={handleVisitCodeLove}
+            >
+              Visit Code Love
+            </button>
+          </div>
+        </div>
+      )}
 
       <Analytics />
     </div>

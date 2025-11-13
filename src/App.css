@@ -253,3 +253,131 @@ html,body{
   outline-offset: 3px;
   box-shadow: 0 0 0 2px rgba(28, 11, 35, 0.9), 0 0 14px rgba(255, 140, 200, 0.6);
 }
+
+/* =======================================================
+   Code Love Promo Popup — Large Version
+   ======================================================= */
+
+.code-love-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle at 20% 20%, rgba(255, 182, 185, 0.20), transparent 55%),
+              radial-gradient(circle at 80% 80%, rgba(195, 169, 255, 0.25), transparent 60%),
+              rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(10px);
+}
+
+/* Bigger card */
+.code-love-modal {
+  position: relative;
+  max-width: 600px;
+  width: 92%;
+  padding: 2.4rem 2.2rem 2rem;
+  border-radius: 28px;
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  box-shadow:
+    0 25px 55px rgba(0, 0, 0, 0.55),
+    0 0 45px rgba(255, 160, 220, 0.35);
+  color: var(--text);
+}
+
+/* Close button */
+.code-love-close {
+  position: absolute;
+  top: 0.7rem;
+  right: 0.9rem;
+  border: none;
+  background: transparent;
+  color: var(--text-soft);
+  font-size: 2rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0.2rem 0.4rem;
+}
+
+.code-love-close:hover {
+  color: var(--accent2);
+}
+
+/* Larger heading */
+.code-love-heading {
+  margin: 0 0 1rem;
+  font-family: "Cormorant Garamond", serif;
+  font-size: 2rem;
+  text-align: center;
+  letter-spacing: 0.5px;
+}
+
+/* Larger body text */
+.code-love-body {
+  margin: 0 0 1.6rem;
+  font-size: 1.15rem;
+  line-height: 1.75;
+  text-align: center;
+  color: var(--text-soft);
+}
+
+.code-love-body strong {
+  color: var(--accent1);
+}
+
+/* Big CTA button */
+.code-love-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem 2rem;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 1.1rem;
+  letter-spacing: 0.4px;
+  font-family: "Poppins", system-ui, -apple-system, Segoe UI, Roboto, Arial;
+  background: linear-gradient(90deg, var(--accent1), var(--accent3));
+  color: #1c0b23;
+  box-shadow: 0 10px 28px rgba(255, 170, 220, 0.4);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, filter 0.25s ease;
+}
+
+.code-love-cta:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 14px 32px rgba(255, 170, 220, 0.55);
+  filter: brightness(1.05);
+}
+
+/* Accessibility focus */
+.code-love-close:focus-visible,
+.code-love-cta:focus-visible {
+  outline: 3px solid var(--accent2);
+  outline-offset: 4px;
+  box-shadow: 0 0 0 3px rgba(28, 11, 35, 0.95),
+              0 0 18px rgba(255, 140, 200, 0.7);
+}
+
+/* Mobile scaling */
+@media (max-width: 480px) {
+  .code-love-modal {
+    padding: 1.8rem 1.4rem 1.6rem;
+    border-radius: 22px;
+  }
+
+  .code-love-heading {
+    font-size: 1.6rem;
+  }
+
+  .code-love-body {
+    font-size: 1.05rem;
+  }
+
+  .code-love-cta {
+    width: 100%;
+    padding: 0.9rem 1.6rem;
+    font-size: 1.05rem;
+  }
+}
