@@ -190,7 +190,7 @@ function App() {
             </h2>
 
             <p className="code-love-body">
-              Hey, you may have thought of this already, but is there a way you can wire in some safegaurds for the applicants too?  All these texts and emails from fake employers...<br />Also, I was able to access your sign in page while using a vpn.  Should that be happening?  <br /> <br />I think about you EVERY. SINGLE. DAY.<br /> <br />
+              
               Follow <strong>Patrick &amp; Jean</strong> as they learn to understand each other
               through curiosity, logic, and code.
               <br />
